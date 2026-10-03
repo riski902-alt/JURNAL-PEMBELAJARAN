@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JURNAL PEMBELAJARAN - INFORMATIKA FUN</title>
+    
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- SheetJS CDN untuk Ekspor Excel -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+    <style>
+        :root {
+            --denim-primary: #2B5B84;
+            --denim-hover: #1E4263;
+            --denim-light: #4A7CA6;
+            --bg-gradient: linear-gradient(135deg, #f0f4f8 0%, #e6f0fa 50%, #e8edf5 100%);
+            --glass-bg: rgba(255, 255, 255, 0.88);
+            --glass-border: rgba(255, 255, 255, 0.7);
+            --glass-shadow: 0 10px 30px rgba(43, 91, 132, 0.08);
+            --accent-lavender: #E8E5F8;
+            --accent-cream: #FFF5EB;
+            --text-dark: #2D3748;
+            --text-muted: #64748B;
+            --border-color: #E2E8F0;
+            --error-bg: #FFF0F2;
+            --error-border: #FF8095;
+            --success-color: #22C55E;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-dark);
+            min-height: 100vh;
+            padding: 20px 15px 40px 15px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* HEADER */
+        .header-section {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-top: 10px;
+        }
+
+        .header-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--denim-primary);
+            letter-spacing: -0.5px;
+            margin-bottom: 6px;
+        }
+
+        .header-subtitle {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* GLASS CARD STYLES */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 18px;
+            box-shadow: var(--glass-shadow);
+            padding: 24px;
+            margin-bottom: 25px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        /* DASHBOARD SUMMARY */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-bottom: 25px;
+        }
+
+        .summary-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 18px 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: var(--glass-shadow);
+        }
+
+        .summary-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--denim-primary), var(--denim-light));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+        }
+
+        .summary-icon.lavender {
+            background: linear-gradient(135deg, #8B5CF6, #A78BFA);
+        }
+
+        .summary-icon.cream {
+            background: linear-gradient(135deg, #F59E0B, #FBBF24);
+        }
+
+        .summary-info h4 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .summary-info p {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--denim-primary);
+        }
+
+        /* FORM SECTION */
+        .form-section-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--denim-primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px solid rgba(43, 91, 132, 0.1);
+            padding-bottom: 10px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-group label i {
+            color: var(--denim-light);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 10px;
+            border: 1.5px solid var(--border-color);
+            background: #FFFFFF;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--denim-light);
+            box-shadow: 0 0 0 3px rgba(74, 124, 166, 0.15);
+        }
+
+        .form-control.input-error {
+            border-color: var(--error-border) !important;
+            background-color: var(--error-bg) !important;
+        }
+
+        textarea.form-control {
+            resize: vertical;
+        }
+
+        .char-counter {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            text-align: right;
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        /* READONLY CARDS (JP & MURID) */
+        .info-card-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 18px;
+        }
+
+        .auto-info-card {
+            background: linear-gradient(135deg, rgba(232, 229, 248, 0.6), rgba(255, 255, 255, 0.8));
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .auto-info-card.cream {
+            background: linear-gradient(135deg, rgba(255, 245, 235, 0.8), rgba(255, 255, 255, 0.8));
+        }
+
+        .auto-info-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: #FFFFFF;
+            color: var(--denim-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .auto-info-text h5 {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .auto-info-text p {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--denim-primary);
+        }
+
+        /* ATTENDANCE SECTION */
+        .attendance-box {
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px dashed var(--denim-light);
+            border-radius: 14px;
+            padding: 18px;
+            margin-bottom: 20px;
+        }
+
+        .attendance-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--denim-primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .attendance-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        /* BUTTONS */
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .btn {
+            padding: 13px 24px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            flex: 1;
+        }
+
+        .btn-primary {
+            background: var(--denim-primary);
+            color: white;
+            box-shadow: 0 4px 14px rgba(43, 91, 132, 0.25);
+        }
+
+        .btn-primary:hover {
+            background: var(--denim-hover);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #E2E8F0;
+            color: var(--text-dark);
+        }
+
+        .btn-secondary:hover {
+            background: #CBD5E1;
+            transform: translateY(-2px);
+        }
+
+        .btn-excel {
+            background: #107C41;
+            color: white;
+            padding: 10px 18px;
+            font-size: 0.88rem;
+            flex: 0 0 auto;
+        }
+
+        .btn-excel:hover {
+            background: #0B5C30;
+        }
+
+        /* TABLE & HISTORY SECTION */
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 15px;
+            border-radius: 12px;
+        }
+
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #FFFFFF;
+            font-size: 0.88rem;
+            text-align: left;
+        }
+
+        th {
+            background: #F1F5F9;
+            color: var(--denim-primary);
+            font-weight: 700;
+            padding: 12px 14px;
+            white-space: nowrap;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        td {
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: top;
+        }
+
+        tbody tr:hover {
+            background-color: #F8FAFC;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 6px;
+        }
+
+        .btn-sm {
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .btn-edit {
+            background: #E0F2FE;
+            color: #0284C7;
+        }
+
+        .btn-edit:hover {
+            background: #BAE6FD;
+        }
+
+        .btn-delete {
+            background: #FFE4E6;
+            color: #E11D48;
+        }
+
+        .btn-delete:hover {
+            background: #FECDD3;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+        }
+
+        .empty-state i {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #CBD5E1;
+        }
+
+        /* TOAST NOTIFICATION */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+
+        .toast {
+            background: #FFFFFF;
+            border-left: 5px solid var(--denim-primary);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            padding: 14px 20px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+            transform: translateX(120%);
+            transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.toast-success {
+            border-left-color: var(--success-color);
+        }
+
+        .toast.toast-error {
+            border-left-color: #EF4444;
+        }
+
+        .toast-icon {
+            font-size: 1.2rem;
+        }
+
+        .toast-success .toast-icon {
+            color: var(--success-color);
+        }
+
+        .toast-error .toast-icon {
+            color: #EF4444;
+        }
+
+        /* FOOTER */
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .footer strong {
+            color: var(--denim-primary);
+            font-weight: 700;
+        }
+
+        /* RESPONSIVE DESIGN */
+        @media (max-width: 768px) {
+            .header-title {
+                font-size: 1.7rem;
+            }
+            .info-card-group {
+                grid-template-columns: 1fr;
+            }
+            .attendance-grid {
+                grid-template-columns: 1fr;
+            }
+            .btn-group {
+                flex-direction: column;
+            }
+            .history-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .btn-excel {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Toast Container untuk Notifikasi -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <div class="container">
+        
+        <!-- 1. JUDUL HALAMAN -->
+        <header class="header-section">
+            <h1 class="header-title">JURNAL PEMBELAJARAN</h1>
+            <p class="header-subtitle">Jurnal Harian Pembelajaran Informatika</p>
+        </header>
+
+        <!-- 14. DASHBOARD RINGKAS -->
+        <section class="summary-grid">
+            <div class="summary-card">
+                <div class="summary-icon"><i class="fa-solid fa-book-open"></i></div>
+                <div class="summary-info">
+                    <h4>Total Jurnal</h4>
+                    <p id="dashTotalJurnal">0</p>
+                </div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-icon lavender"><i class="fa-solid fa-clock"></i></div>
+                <div class="summary-info">
+                    <h4>Total JP</h4>
+                    <p id="dashTotalJP">0 JP</p>
+                </div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-icon cream"><i class="fa-solid fa-calendar-day"></i></div>
+                <div class="summary-info">
+                    <h4>Hari Ini</h4>
+                    <p id="dashHariIni">0</p>
+                </div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-icon"><i class="fa-solid fa-users"></i></div>
+                <div class="summary-info">
+                    <h4>Kelas Terakhir</h4>
+                    <p id="dashKelasTerakhir">-</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- FORM JURNAL PEMBELAJARAN -->
+        <section class="glass-card">
+            <h2 class="form-section-title">
+                <i class="fa-solid fa-pen-to-square"></i> Input Jurnal Pembelajaran
+            </h2>
+
+            <form id="jurnalForm" novalidate>
+                <input type="hidden" id="editId" value="">
+
+                <div class="form-grid">
+                    <!-- A. FILTER KELAS -->
+                    <div class="form-group">
+                        <label for="kelasSelect"><i class="fa-solid fa-graduation-cap"></i> Kelas *</label>
+                        <select id="kelasSelect" class="form-control" required>
+                            <option value="">-- Pilih Kelas --</option>
+                            <option value="VII.1">VII.1</option>
+                            <option value="VII.2">VII.2</option>
+                            <option value="VIII.1">VIII.1</option>
+                            <option value="VIII.2">VIII.2</option>
+                            <option value="VIII.3">VIII.3</option>
+                            <option value="IX.1">IX.1</option>
+                            <option value="IX.2">IX.2</option>
+                        </select>
+                    </div>
+
+                    <!-- B. TANGGAL -->
+                    <div class="form-group">
+                        <label for="tanggalInput"><i class="fa-regular fa-calendar"></i> Tanggal *</label>
+                        <input type="date" id="tanggalInput" class="form-control" required>
+                    </div>
+
+                    <!-- C. PERTEMUAN -->
+                    <div class="form-group">
+                        <label for="pertemuanSelect"><i class="fa-solid fa-list-ol"></i> Pertemuan *</label>
+                        <select id="pertemuanSelect" class="form-control" required>
+                            <option value="">-- Pilih Pertemuan --</option>
+                            <script>
+                                for(let i=1; i<=19; i++) {
+                                    document.write(`<option value="Pertemuan ${i}">Pertemuan ${i}</option>`);
+                                }
+                            </script>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- 6. JUMLAH JP & 7. JUMLAH MURID AUTOMATIC CARDS -->
+                <div class="info-card-group">
+                    <div class="auto-info-card">
+                        <div class="auto-info-icon"><i class="fa-solid fa-hourglass-half"></i></div>
+                        <div class="auto-info-text">
+                            <h5>Jumlah JP</h5>
+                            <p>3 JP</p>
+                        </div>
+                    </div>
+                    <div class="auto-info-card cream">
+                        <div class="auto-info-icon"><i class="fa-solid fa-user-group"></i></div>
+                        <div class="auto-info-text">
+                            <h5>Jumlah Murid</h5>
+                            <p id="jumlahMuridDisplay">0 Siswa</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. MENU MATERI -->
+                <div class="form-group">
+                    <label for="materiInput"><i class="fa-solid fa-book"></i> Materi (Maksimal 100 karakter) *</label>
+                    <textarea id="materiInput" class="form-control" rows="2" maxlength="100" placeholder="Contoh: Konsep dasar jaringan komputer dan jenis-jenis jaringan." required></textarea>
+                    <div id="materiCounter" class="char-counter">0/100 karakter</div>
+                </div>
+
+                <!-- 5. MENU URAIAN -->
+                <div class="form-group">
+                    <label for="uraianInput"><i class="fa-solid fa-align-left"></i> Uraian Pembelajaran (Maksimal 500 karakter) *</label>
+                    <textarea id="uraianInput" class="form-control" rows="4" maxlength="500" placeholder="Tuliskan uraian kegiatan atau materi pembelajaran secara singkat dan jelas..." required></textarea>
+                    <div id="uraianCounter" class="char-counter">0/500 karakter</div>
+                </div>
+
+                <!-- 8. KEHADIRAN SISWA -->
+                <div class="attendance-box">
+                    <div class="attendance-title">
+                        <i class="fa-solid fa-clipboard-user"></i> KEHADIRAN SISWA
+                    </div>
+                    <div class="attendance-grid">
+                        <div class="form-group" style="margin-bottom:0;">
+                            <label for="sakitInput">Sakit *</label>
+                            <input type="number" id="sakitInput" class="form-control" min="0" value="0" required>
+                        </div>
+                        <div class="form-group" style="margin-bottom:0;">
+                            <label for="izinInput">Izin *</label>
+                            <input type="number" id="izinInput" class="form-control" min="0" value="0" required>
+                        </div>
+                        <div class="form-group" style="margin-bottom:0;">
+                            <label for="alfaInput">Alfa *</label>
+                            <input type="number" id="alfaInput" class="form-control" min="0" value="0" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 10. TOMBOL AKSI -->
+                <div class="btn-group">
+                    <button type="submit" id="btnSave" class="btn btn-primary">
+                        <i class="fa-solid fa-floppy-disk"></i> SIMPAN JURNAL
+                    </button>
+                    <button type="button" id="btnReset" class="btn btn-secondary">
+                        <i class="fa-solid fa-rotate-right"></i> RESET FORM
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <!-- 12. RIWAYAT JURNAL & 13. FILTER RIWAYAT -->
+        <section class="glass-card">
+            <div class="history-header">
+                <h2 class="form-section-title" style="margin-bottom:0; border-bottom:none; padding-bottom:0;">
+                    <i class="fa-solid fa-history"></i> Riwayat Jurnal Pembelajaran
+                </h2>
+                <!-- 11. UNDUH EXCEL -->
+                <button type="button" id="btnExportExcel" class="btn btn-excel">
+                    <i class="fa-solid fa-file-excel"></i> Unduh Excel
+                </button>
+            </div>
+
+            <!-- 13. FILTER RIWAYAT -->
+            <div class="filter-grid">
+                <div class="form-group" style="margin-bottom:0;">
+                    <label for="filterKelas"><i class="fa-solid fa-filter"></i> Filter Kelas</label>
+                    <select id="filterKelas" class="form-control">
+                        <option value="">Semua Kelas</option>
+                        <option value="VII.1">VII.1</option>
+                        <option value="VII.2">VII.2</option>
+                        <option value="VIII.1">VIII.1</option>
+                        <option value="VIII.2">VIII.2</option>
+                        <option value="VIII.3">VIII.3</option>
+                        <option value="IX.1">IX.1</option>
+                        <option value="IX.2">IX.2</option>
+                    </select>
+                </div>
+                <div class="form-group" style="margin-bottom:0;">
+                    <label for="filterTanggal"><i class="fa-regular fa-calendar"></i> Filter Tanggal</label>
+                    <input type="date" id="filterTanggal" class="form-control">
+                </div>
+                <div class="form-group" style="margin-bottom:0;">
+                    <label for="filterSearch"><i class="fa-solid fa-magnifying-glass"></i> Cari Materi</label>
+                    <input type="text" id="filterSearch" class="form-control" placeholder="Kata kunci materi...">
+                </div>
+            </div>
+
+            <!-- TABEL RIWAYAT -->
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Tanggal</th>
+                            <th>Kelas</th>
+                            <th>Pertemuan</th>
+                            <th>Materi & Uraian</th>
+                            <th>JP</th>
+                            <th>Murid</th>
+                            <th>Sakit</th>
+                            <th>Izin</th>
+                            <th>Alfa</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="jurnalTableBody">
+                        <!-- Data jurnal akan dimuat di sini -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 18. IDENTITAS WEBSITE -->
+        <footer class="footer">
+            <p><strong>INFORMATIKA FUN</strong></p>
+            <p>By: Riski Amalia, S.Pd.</p>
+        </footer>
+
+    </div>
+
+    <!-- JAVASCRIPT SYSTEM -->
+    <script>
+        // Mapping Jumlah Murid per Kelas
+        const dataMuridKelas = {
+            "VII.1": 21,
+            "VII.2": 21,
+            "VIII.1": 23,
+            "VIII.2": 22,
+            "VIII.3": 20,
+            "IX.1": 27,
+            "IX.2": 26
+        };
+
+        // DOM Elements
+        const jurnalForm = document.getElementById('jurnalForm');
+        const editIdInput = document.getElementById('editId');
+        const kelasSelect = document.getElementById('kelasSelect');
+        const tanggalInput = document.getElementById('tanggalInput');
+        const pertemuanSelect = document.getElementById('pertemuanSelect');
+        const materiInput = document.getElementById('materiInput');
+        const uraianInput = document.getElementById('uraianInput');
+        const sakitInput = document.getElementById('sakitInput');
+        const izinInput = document.getElementById('izinInput');
+        const alfaInput = document.getElementById('alfaInput');
+        const jumlahMuridDisplay = document.getElementById('jumlahMuridDisplay');
+        
+        const materiCounter = document.getElementById('materiCounter');
+        const uraianCounter = document.getElementById('uraianCounter');
+        
+        const btnSave = document.getElementById('btnSave');
+        const btnReset = document.getElementById('btnReset');
+        const btnExportExcel = document.getElementById('btnExportExcel');
+        
+        const filterKelas = document.getElementById('filterKelas');
+        const filterTanggal = document.getElementById('filterTanggal');
+        const filterSearch = document.getElementById('filterSearch');
+        const jurnalTableBody = document.getElementById('jurnalTableBody');
+
+        // Dashboard DOM
+        const dashTotalJurnal = document.getElementById('dashTotalJurnal');
+        const dashTotalJP = document.getElementById('dashTotalJP');
+        const dashHariIni = document.getElementById('dashHariIni');
+        const dashKelasTerakhir = document.getElementById('dashKelasTerakhir');
+
+        // Storage Key
+        const STORAGE_KEY = 'INFORMATIKA_FUN_JURNAL_DATA';
+
+        // Set default tanggal hari ini
+        document.addEventListener('DOMContentLoaded', () => {
+            const today = new Date().toISOString().split('T')[0];
+            tanggalInput.value = today;
+            loadJurnalData();
+        });
+
+        // Event Listener: Kelas Selection Change
+        kelasSelect.addEventListener('change', function() {
+            const selectedKelas = this.value;
+            if (selectedKelas && dataMuridKelas[selectedKelas]) {
+                const count = dataMuridKelas[selectedKelas];
+                jumlahMuridDisplay.textContent = `${count} Siswa`;
+                
+                // Update Max Input Kehadiran
+                sakitInput.max = count;
+                izinInput.max = count;
+                alfaInput.max = count;
+            } else {
+                jumlahMuridDisplay.textContent = '0 Siswa';
+            }
+            clearErrors();
+        });
+
+        // Realtime Character Counter
+        materiInput.addEventListener('input', function() {
+            materiCounter.textContent = `${this.value.length}/100 karakter`;
+            this.classList.remove('input-error');
+        });
+
+        uraianInput.addEventListener('input', function() {
+            uraianCounter.textContent = `${this.value.length}/500 karakter`;
+            this.classList.remove('input-error');
+        });
+
+        // Toast Notification System
+        function showToast(message, type = 'success') {
+            const toastContainer = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            
+            const iconClass = type === 'success' ? 'fa-circle-check' : 'fa-circle-exclamation';
+            
+            toast.innerHTML = `
+                <i class="fa-solid ${iconClass} toast-icon"></i>
+                <div>${message}</div>
+            `;
+            
+            toastContainer.appendChild(toast);
+            
+            setTimeout(() => toast.classList.add('show'), 100);
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+
+        // Helper Format Tanggal (YYYY-MM-DD -> DD/MM/YYYY)
+        function formatDateToDisplay(dateString) {
+            if (!dateString) return '-';
+            const parts = dateString.split('-');
+            if (parts.length === 3) {
+                return `${parts[2]}/${parts[1]}/${parts[0]}`;
+            }
+            return dateString;
+        }
+
+        // Clear Error Borders
+        function clearErrors() {
+            const inputs = jurnalForm.querySelectorAll('.form-control');
+            inputs.forEach(input => input.classList.remove('input-error'));
+        }
+
+        // Validate Form Completeness & Attendance Calculation
+        function validateForm() {
+            clearErrors();
+            let isValid = true;
+            let missingFields = false;
+
+            const kelas = kelasSelect.value;
+            const tanggal = tanggalInput.value;
+            const pertemuan = pertemuanSelect.value;
+            const materi = materiInput.value.trim();
+            const uraian = uraianInput.value.trim();
+            const sakit = sakitInput.value;
+            const izin = izinInput.value;
+            const alfa = alfaInput.value;
+
+            // Check Empty Fields
+            if (!kelas) { kelasSelect.classList.add('input-error'); missingFields = true; }
+            if (!tanggal) { tanggalInput.classList.add('input-error'); missingFields = true; }
+            if (!pertemuan) { pertemuanSelect.classList.add('input-error'); missingFields = true; }
+            if (!materi) { materiInput.classList.add('input-error'); missingFields = true; }
+            if (!uraian) { uraianInput.classList.add('input-error'); missingFields = true; }
+            if (sakit === '') { sakitInput.classList.add('input-error'); missingFields = true; }
+            if (izin === '') { izinInput.classList.add('input-error'); missingFields = true; }
+            if (alfa === '') { alfaInput.classList.add('input-error'); missingFields = true; }
+
+            if (missingFields) {
+                showToast("Mohon lengkapi semua data jurnal terlebih dahulu.", "error");
+                return false;
+            }
+
+            // Attendance Validation
+            const maxMurid = dataMuridKelas[kelas] || 0;
+            const sVal = parseInt(sakit) || 0;
+            const iVal = parseInt(izin) || 0;
+            const aVal = parseInt(alfa) || 0;
+            const totalAbsen = sVal + iVal + aVal;
+
+            if (totalAbsen > maxMurid) {
+                sakitInput.classList.add('input-error');
+                izinInput.classList.add('input-error');
+                alfaInput.classList.add('input-error');
+                showToast("Jumlah kehadiran tidak sesuai dengan jumlah murid.", "error");
+                return false;
+            }
+
+            return true;
+        }
+
+        // Save / Update Jurnal
+        jurnalForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            if (!validateForm()) return;
+
+            const editId = editIdInput.value;
+            const kelas = kelasSelect.value;
+            const totalMurid = dataMuridKelas[kelas];
+
+            const jurnalItem = {
+                id: editId ? editId : Date.now().toString(),
+                kelas: kelas,
+                tanggal: tanggalInput.value,
+                pertemuan: pertemuanSelect.value,
+                materi: materiInput.value.trim(),
+                uraian: uraianInput.value.trim(),
+                jp: 3, // Otomatis 3 JP
+                jumlahMurid: totalMurid,
+                sakit: parseInt(sakitInput.value) || 0,
+                izin: parseInt(izinInput.value) || 0,
+                alfa: parseInt(alfaInput.value) || 0,
+                createdAt: new Date().toISOString()
+            };
+
+            let jurnals = getStoredJurnals();
+
+            if (editId) {
+                // Update Existing
+                const index = jurnals.findIndex(item => item.id === editId);
+                if (index !== -1) {
+                    jurnals[index] = jurnalItem;
+                }
+                showToast("Jurnal pembelajaran berhasil diperbarui.", "success");
+            } else {
+                // Add New
+                jurnals.push(jurnalItem);
+                showToast("Jurnal pembelajaran berhasil disimpan.", "success");
+            }
+
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(jurnals));
+            resetFormFields(false);
+            loadJurnalData();
+        });
+
+        // Reset Form Action
+        btnReset.addEventListener('click', function() {
+            if (confirm("Apakah Anda yakin ingin mengosongkan form?")) {
+                resetFormFields(true);
+            }
+        });
+
+        function resetFormFields(resetDate = true) {
+            jurnalForm.reset();
+            editIdInput.value = '';
+            jumlahMuridDisplay.textContent = '0 Siswa';
+            materiCounter.textContent = '0/100 karakter';
+            uraianCounter.textContent = '0/500 karakter';
+            btnSave.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> SIMPAN JURNAL';
+            clearErrors();
+            
+            if (resetDate) {
+                const today = new Date().toISOString().split('T')[0];
+                tanggalInput.value = today;
+            }
+        }
+
+        // Retrieve Data from LocalStorage
+        function getStoredJurnals() {
+            const data = localStorage.getItem(STORAGE_KEY);
+            return data ? JSON.parse(data) : [];
+        }
+
+        // Load & Render Data & Update Dashboard
+        function loadJurnalData() {
+            const jurnals = getStoredJurnals();
+            renderTable(jurnals);
+            updateDashboard(jurnals);
+        }
+
+        // Update Dashboard Summary
+        function updateDashboard(jurnals) {
+            dashTotalJurnal.textContent = jurnals.length;
+            
+            const totalJP = jurnals.reduce((acc, curr) => acc + (curr.jp || 3), 0);
+            dashTotalJP.textContent = `${totalJP} JP`;
+
+            const today = new Date().toISOString().split('T')[0];
+            const hariIniCount = jurnals.filter(j => j.tanggal === today).length;
+            dashHariIni.textContent = hariIniCount;
+
+            if (jurnals.length > 0) {
+                dashKelasTerakhir.textContent = jurnals[jurnals.length - 1].kelas;
+            } else {
+                dashKelasTerakhir.textContent = '-';
+            }
+        }
+
+        // Render Table with Filters
+        function renderTable(jurnals) {
+            const filterKelasVal = filterKelas.value;
+            const filterTanggalVal = filterTanggal.value;
+            const filterSearchVal = filterSearch.value.toLowerCase().trim();
+
+            let filtered = jurnals.filter(item => {
+                let matchKelas = filterKelasVal ? item.kelas === filterKelasVal : true;
+                let matchTanggal = filterTanggalVal ? item.tanggal === filterTanggalVal : true;
+                let matchSearch = filterSearchVal ? 
+                    (item.materi.toLowerCase().includes(filterSearchVal) || item.uraian.toLowerCase().includes(filterSearchVal)) : true;
+                
+                return matchKelas && matchTanggal && matchSearch;
+            });
+
+            // Sort Latest First
+            filtered.sort((a, b) => new Date(b.tanggal) - new Date(a.tanggal));
+
+            jurnalTableBody.innerHTML = '';
+
+            if (filtered.length === 0) {
+                jurnalTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="11">
+                            <div class="empty-state">
+                                <i class="fa-regular fa-folder-open"></i>
+                                <p>Belum ada data jurnal yang tersimpan.</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            filtered.forEach((item, index) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td style="white-space:nowrap;">${formatDateToDisplay(item.tanggal)}</td>
+                    <td><strong>${item.kelas}</strong></td>
+                    <td style="white-space:nowrap;">${item.pertemuan}</td>
+                    <td>
+                        <strong style="color:var(--denim-primary);">${item.materi}</strong>
+                        <p style="font-size:0.82rem; color:var(--text-muted); margin-top:4px;">${item.uraian}</p>
+                    </td>
+                    <td>${item.jp} JP</td>
+                    <td>${item.jumlahMurid}</td>
+                    <td><span style="color:#D97706; font-weight:600;">${item.sakit}</span></td>
+                    <td><span style="color:#2563EB; font-weight:600;">${item.izin}</span></td>
+                    <td><span style="color:#DC2626; font-weight:600;">${item.alfa}</span></td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="btn-sm btn-edit" onclick="editJurnal('${item.id}')">
+                                <i class="fa-solid fa-pen"></i> Edit
+                            </button>
+                            <button class="btn-sm btn-delete" onclick="deleteJurnal('${item.id}')">
+                                <i class="fa-solid fa-trash"></i> Hapus
+                            </button>
+                        </div>
+                    </td>
+                `;
+                jurnalTableBody.appendChild(tr);
+            });
+        }
+
+        // Filter Event Listeners
+        filterKelas.addEventListener('change', loadJurnalData);
+        filterTanggal.addEventListener('change', loadJurnalData);
+        filterSearch.addEventListener('input', loadJurnalData);
+
+        // Edit Jurnal Item
+        window.editJurnal = function(id) {
+            const jurnals = getStoredJurnals();
+            const item = jurnals.find(j => j.id === id);
+
+            if (item) {
+                editIdInput.value = item.id;
+                kelasSelect.value = item.kelas;
+                
+                // Trigger class change event to update student count
+                kelasSelect.dispatchEvent(new Event('change'));
+
+                tanggalInput.value = item.tanggal;
+                pertemuanSelect.value = item.pertemuan;
+                materiInput.value = item.materi;
+                uraianInput.value = item.uraian;
+                sakitInput.value = item.sakit;
+                izinInput.value = item.izin;
+                alfaInput.value = item.alfa;
+
+                // Update character counters
+                materiCounter.textContent = `${item.materi.length}/100 karakter`;
+                uraianCounter.textContent = `${item.uraian.length}/500 karakter`;
+
+                btnSave.innerHTML = '<i class="fa-solid fa-pen-to-square"></i> UPDATE JURNAL';
+                
+                // Scroll smoothly to form top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                showToast("Data jurnal dimuat ke form untuk diedit.", "success");
+            }
+        };
+
+        // Delete Jurnal Item
+        window.deleteJurnal = function(id) {
+            if (confirm("Apakah Anda yakin ingin menghapus jurnal ini?")) {
+                let jurnals = getStoredJurnals();
+                jurnals = jurnals.filter(j => j.id !== id);
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(jurnals));
+                showToast("Jurnal berhasil dihapus.", "success");
+                loadJurnalData();
+            }
+        };
+
+        // 11. UNDUH HASIL KE MICROSOFT EXCEL (.XLSX)
+        btnExportExcel.addEventListener('click', function() {
+            const jurnals = getStoredJurnals();
+
+            if (jurnals.length === 0) {
+                showToast("Tidak ada data jurnal untuk diunduh.", "error");
+                return;
+            }
+
+            // Prepare excel data structure
+            const excelData = jurnals.map((item, index) => ({
+                "No": index + 1,
+                "Tanggal": formatDateToDisplay(item.tanggal),
+                "Kelas": item.kelas,
+                "Pertemuan": item.pertemuan,
+                "Materi": item.materi,
+                "Uraian Pembelajaran": item.uraian,
+                "Jumlah JP": item.jp,
+                "Jumlah Murid": item.jumlahMurid,
+                "Sakit": item.sakit,
+                "Izin": item.izin,
+                "Alfa": item.alfa
+            }));
+
+            // Create Worksheet
+            const worksheet = XLSX.utils.json_to_sheet(excelData);
+
+            // Set column widths
+            worksheet['!cols'] = [
+                { wch: 5 },  // No
+                { wch: 12 }, // Tanggal
+                { wch: 10 }, // Kelas
+                { wch: 15 }, // Pertemuan
+                { wch: 35 }, // Materi
+                { wch: 50 }, // Uraian
+                { wch: 10 }, // JP
+                { wch: 12 }, // Murid
+                { wch: 8 },  // Sakit
+                { wch: 8 },  // Izin
+                { wch: 8 }   // Alfa
+            ];
+
+            // Create Workbook & Append Worksheet
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Jurnal Pembelajaran");
+
+            // Write File
+            XLSX.writeFile(workbook, "Jurnal_Pembelajaran_Informatika.xlsx");
+            showToast("File Excel berhasil diunduh!", "success");
+        });
+    </script>
+</body>
+</html>
