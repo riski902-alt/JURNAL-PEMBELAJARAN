@@ -353,7 +353,7 @@
 
         .filter-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
             gap: 12px;
             margin-bottom: 20px;
             background: rgba(255, 255, 255, 0.5);
@@ -539,7 +539,7 @@
             <p class="header-subtitle">Jurnal Harian Pembelajaran Informatika</p>
         </header>
 
-        <!-- 14. DASHBOARD RINGKAS -->
+        <!-- DASHBOARD RINGKAS -->
         <section class="summary-grid">
             <div class="summary-card">
                 <div class="summary-icon"><i class="fa-solid fa-book-open"></i></div>
@@ -616,13 +616,13 @@
                     </div>
                 </div>
 
-                <!-- 6. JUMLAH JP & 7. JUMLAH MURID AUTOMATIC CARDS -->
+                <!-- JUMLAH JP & JUMLAH MURID AUTOMATIC CARDS -->
                 <div class="info-card-group">
                     <div class="auto-info-card">
                         <div class="auto-info-icon"><i class="fa-solid fa-hourglass-half"></i></div>
                         <div class="auto-info-text">
                             <h5>Jumlah JP</h5>
-                            <p>3 JP</p>
+                            <p id="jumlahJPDisplay">3 JP</p>
                         </div>
                     </div>
                     <div class="auto-info-card cream">
@@ -634,21 +634,21 @@
                     </div>
                 </div>
 
-                <!-- 4. MENU MATERI -->
+                <!-- MENU MATERI -->
                 <div class="form-group">
                     <label for="materiInput"><i class="fa-solid fa-book"></i> Materi (Maksimal 100 karakter) *</label>
                     <textarea id="materiInput" class="form-control" rows="2" maxlength="100" placeholder="Contoh: Konsep dasar jaringan komputer dan jenis-jenis jaringan." required></textarea>
                     <div id="materiCounter" class="char-counter">0/100 karakter</div>
                 </div>
 
-                <!-- 5. MENU URAIAN -->
+                <!-- MENU URAIAN -->
                 <div class="form-group">
                     <label for="uraianInput"><i class="fa-solid fa-align-left"></i> Uraian Pembelajaran (Maksimal 500 karakter) *</label>
                     <textarea id="uraianInput" class="form-control" rows="4" maxlength="500" placeholder="Tuliskan uraian kegiatan atau materi pembelajaran secara singkat dan jelas..." required></textarea>
                     <div id="uraianCounter" class="char-counter">0/500 karakter</div>
                 </div>
 
-                <!-- 8. KEHADIRAN SISWA -->
+                <!-- KEHADIRAN SISWA -->
                 <div class="attendance-box">
                     <div class="attendance-title">
                         <i class="fa-solid fa-clipboard-user"></i> KEHADIRAN SISWA
@@ -669,7 +669,7 @@
                     </div>
                 </div>
 
-                <!-- 10. TOMBOL AKSI -->
+                <!-- TOMBOL AKSI -->
                 <div class="btn-group">
                     <button type="submit" id="btnSave" class="btn btn-primary">
                         <i class="fa-solid fa-floppy-disk"></i> SIMPAN JURNAL
@@ -681,19 +681,19 @@
             </form>
         </section>
 
-        <!-- 12. RIWAYAT JURNAL & 13. FILTER RIWAYAT -->
+        <!-- RIWAYAT JURNAL & FILTER RIWAYAT -->
         <section class="glass-card">
             <div class="history-header">
                 <h2 class="form-section-title" style="margin-bottom:0; border-bottom:none; padding-bottom:0;">
                     <i class="fa-solid fa-history"></i> Riwayat Jurnal Pembelajaran
                 </h2>
-                <!-- 11. UNDUH EXCEL -->
+                <!-- UNDUH EXCEL -->
                 <button type="button" id="btnExportExcel" class="btn btn-excel">
                     <i class="fa-solid fa-file-excel"></i> Unduh Excel
                 </button>
             </div>
 
-            <!-- 13. FILTER RIWAYAT -->
+            <!-- FILTER RIWAYAT TERMASUK FILTER JAM PELAJARAN -->
             <div class="filter-grid">
                 <div class="form-group" style="margin-bottom:0;">
                     <label for="filterKelas"><i class="fa-solid fa-filter"></i> Filter Kelas</label>
@@ -706,6 +706,15 @@
                         <option value="VIII.3">VIII.3</option>
                         <option value="IX.1">IX.1</option>
                         <option value="IX.2">IX.2</option>
+                    </select>
+                </div>
+                <div class="form-group" style="margin-bottom:0;">
+                    <label for="filterJP"><i class="fa-solid fa-clock"></i> Jam Pelajaran (JP)</label>
+                    <select id="filterJP" class="form-control">
+                        <option value="">Semua JP</option>
+                        <option value="1 - 3">1 - 3 JP</option>
+                        <option value="4 - 6">4 - 6 JP</option>
+                        <option value="7 - 8">7 - 8 JP</option>
                     </select>
                 </div>
                 <div class="form-group" style="margin-bottom:0;">
@@ -726,9 +735,9 @@
                             <th>No</th>
                             <th>Tanggal</th>
                             <th>Kelas</th>
+                            <th>Jam Ke / JP</th>
                             <th>Pertemuan</th>
                             <th>Materi & Uraian</th>
-                            <th>JP</th>
                             <th>Murid</th>
                             <th>Sakit</th>
                             <th>Izin</th>
@@ -737,13 +746,13 @@
                         </tr>
                     </thead>
                     <tbody id="jurnalTableBody">
-                        <!-- Data jurnal akan dimuat di sini -->
+                        <!-- Data jurnal akan dimuat di sini secara realtime -->
                     </tbody>
                 </table>
             </div>
         </section>
 
-        <!-- 18. IDENTITAS WEBSITE -->
+        <!-- IDENTITAS WEBSITE -->
         <footer class="footer">
             <p><strong>INFORMATIKA FUN</strong></p>
             <p>By: Riski Amalia, S.Pd.</p>
@@ -751,16 +760,16 @@
 
     </div>
 
-    <!-- FIREBASE INITIALIZATION -->
+    <!-- FIREBASE REALTIME DATABASE MODULE INTEGRATION -->
     <script type="module">
-        // Import Firebase functions via CDN for pure HTML integration
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-analytics.js";
+        import { getDatabase, ref, set, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
 
-        // Your web app's Firebase configuration
+        // Konfigurasi Firebase Realtime Database
         const firebaseConfig = {
             apiKey: "AIzaSyBxy_aOtOcbDIzCKxxKxzcZgQSi4-YUT6g",
             authDomain: "informatika-fun.firebaseapp.com",
+            databaseURL: "https://jurnalpembelajaraninformatika-default-rtdb.firebaseio.com",
             projectId: "informatika-fun",
             storageBucket: "informatika-fun.firebasestorage.app",
             messagingSenderId: "869889926091",
@@ -768,24 +777,20 @@
             measurementId: "G-QRY003YPJ3"
         };
 
-        // Initialize Firebase
+        // Inisialisasi Firebase & Realtime DB
         const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
-        
-        console.log("Firebase berhasil diinisialisasi");
-    </script>
+        const db = getDatabase(app);
+        const jurnalRef = ref(db, 'jurnal_pembelajaran');
 
-    <!-- JAVASCRIPT SYSTEM (LocalStorage Based) -->
-    <script>
-        // Mapping Jumlah Murid per Kelas
-        const dataMuridKelas = {
-            "VII.1": 21,
-            "VII.2": 21,
-            "VIII.1": 23,
-            "VIII.2": 22,
-            "VIII.3": 20,
-            "IX.1": 27,
-            "IX.2": 26
+        // Pemetaan Data Kelas: Jumlah Murid & Jam Pelajaran (JP) Otomatis
+        const dataKelasDetail = {
+            "VII.1": { murid: 21, jp: "1 - 3", totalJP: 3 },
+            "VII.2": { murid: 21, jp: "4 - 6", totalJP: 3 },
+            "VIII.1": { murid: 23, jp: "1 - 3", totalJP: 3 },
+            "VIII.2": { murid: 22, jp: "4 - 6", totalJP: 3 },
+            "VIII.3": { murid: 20, jp: "7 - 8", totalJP: 2 },
+            "IX.1": { murid: 27, jp: "1 - 3", totalJP: 3 },
+            "IX.2": { murid: 26, jp: "4 - 6", totalJP: 3 }
         };
 
         // DOM Elements
@@ -800,6 +805,7 @@
         const izinInput = document.getElementById('izinInput');
         const alfaInput = document.getElementById('alfaInput');
         const jumlahMuridDisplay = document.getElementById('jumlahMuridDisplay');
+        const jumlahJPDisplay = document.getElementById('jumlahJPDisplay');
         
         const materiCounter = document.getElementById('materiCounter');
         const uraianCounter = document.getElementById('uraianCounter');
@@ -809,6 +815,7 @@
         const btnExportExcel = document.getElementById('btnExportExcel');
         
         const filterKelas = document.getElementById('filterKelas');
+        const filterJP = document.getElementById('filterJP');
         const filterTanggal = document.getElementById('filterTanggal');
         const filterSearch = document.getElementById('filterSearch');
         const jurnalTableBody = document.getElementById('jurnalTableBody');
@@ -819,32 +826,66 @@
         const dashHariIni = document.getElementById('dashHariIni');
         const dashKelasTerakhir = document.getElementById('dashKelasTerakhir');
 
-        // Storage Key
-        const STORAGE_KEY = 'INFORMATIKA_FUN_JURNAL_DATA';
+        // Store Local Data State dari Realtime DB
+        let globalJurnalData = [];
 
-        // Set default tanggal hari ini
+        // Set default tanggal hari ini saat pertama dimuat
         document.addEventListener('DOMContentLoaded', () => {
             const today = new Date().toISOString().split('T')[0];
             tanggalInput.value = today;
-            loadJurnalData();
         });
 
-        // Event Listener: Kelas Selection Change
+        // 1. LISTEN REALTIME CHANGES DARI FIREBASE (Sync Laptop & Tablet)
+        onValue(jurnalRef, (snapshot) => {
+            const data = snapshot.val();
+            globalJurnalData = [];
+
+            if (data) {
+                Object.keys(data).forEach((key) => {
+                    globalJurnalData.push({
+                        id: key,
+                        ...data[key]
+                    });
+                });
+            }
+
+            renderTable();
+            updateDashboard();
+        });
+
+        // Event Listener: Pilihan Kelas Otomatis Mengisi JP dan Jumlah Murid
         kelasSelect.addEventListener('change', function() {
             const selectedKelas = this.value;
-            if (selectedKelas && dataMuridKelas[selectedKelas]) {
-                const count = dataMuridKelas[selectedKelas];
-                jumlahMuridDisplay.textContent = `${count} Siswa`;
+            if (selectedKelas && dataKelasDetail[selectedKelas]) {
+                const info = dataKelasDetail[selectedKelas];
+                jumlahMuridDisplay.textContent = `${info.murid} Siswa`;
+                jumlahJPDisplay.textContent = `${info.jp} (${info.totalJP} JP)`;
                 
                 // Update Max Input Kehadiran
-                sakitInput.max = count;
-                izinInput.max = count;
-                alfaInput.max = count;
+                sakitInput.max = info.murid;
+                izinInput.max = info.murid;
+                alfaInput.max = info.murid;
             } else {
                 jumlahMuridDisplay.textContent = '0 Siswa';
+                jumlahJPDisplay.textContent = '3 JP';
             }
             clearErrors();
         });
+
+        // Event Listener: Filter Kelas Otomatis Memilih Filter JP
+        filterKelas.addEventListener('change', function() {
+            const selectedKelas = this.value;
+            if (selectedKelas && dataKelasDetail[selectedKelas]) {
+                filterJP.value = dataKelasDetail[selectedKelas].jp;
+            } else {
+                filterJP.value = "";
+            }
+            renderTable();
+        });
+
+        filterJP.addEventListener('change', renderTable);
+        filterTanggal.addEventListener('change', renderTable);
+        filterSearch.addEventListener('input', renderTable);
 
         // Realtime Character Counter
         materiInput.addEventListener('input', function() {
@@ -896,10 +937,9 @@
             inputs.forEach(input => input.classList.remove('input-error'));
         }
 
-        // Validate Form Completeness & Attendance Calculation
+        // Form Validation
         function validateForm() {
             clearErrors();
-            let isValid = true;
             let missingFields = false;
 
             const kelas = kelasSelect.value;
@@ -911,7 +951,6 @@
             const izin = izinInput.value;
             const alfa = alfaInput.value;
 
-            // Check Empty Fields
             if (!kelas) { kelasSelect.classList.add('input-error'); missingFields = true; }
             if (!tanggal) { tanggalInput.classList.add('input-error'); missingFields = true; }
             if (!pertemuan) { pertemuanSelect.classList.add('input-error'); missingFields = true; }
@@ -926,25 +965,21 @@
                 return false;
             }
 
-            // Attendance Validation
-            const maxMurid = dataMuridKelas[kelas] || 0;
-            const sVal = parseInt(sakit) || 0;
-            const iVal = parseInt(izin) || 0;
-            const aVal = parseInt(alfa) || 0;
-            const totalAbsen = sVal + iVal + aVal;
+            const maxMurid = dataKelasDetail[kelas] ? dataKelasDetail[kelas].murid : 0;
+            const totalAbsen = (parseInt(sakit) || 0) + (parseInt(izin) || 0) + (parseInt(alfa) || 0);
 
             if (totalAbsen > maxMurid) {
                 sakitInput.classList.add('input-error');
                 izinInput.classList.add('input-error');
                 alfaInput.classList.add('input-error');
-                showToast("Jumlah kehadiran tidak sesuai dengan jumlah murid.", "error");
+                showToast("Jumlah ketidakhadiran melebihi jumlah murid.", "error");
                 return false;
             }
 
             return true;
         }
 
-        // Save / Update Jurnal
+        // SIMPAN / UPDATE JURNAL KE FIREBASE REALTIME DB
         jurnalForm.addEventListener('submit', function(e) {
             e.preventDefault();
 
@@ -952,41 +987,40 @@
 
             const editId = editIdInput.value;
             const kelas = kelasSelect.value;
-            const totalMurid = dataMuridKelas[kelas];
+            const kelasInfo = dataKelasDetail[kelas] || { murid: 0, jp: "1 - 3", totalJP: 3 };
 
             const jurnalItem = {
-                id: editId ? editId : Date.now().toString(),
                 kelas: kelas,
                 tanggal: tanggalInput.value,
                 pertemuan: pertemuanSelect.value,
                 materi: materiInput.value.trim(),
                 uraian: uraianInput.value.trim(),
-                jp: 3, // Otomatis 3 JP
-                jumlahMurid: totalMurid,
+                jp: kelasInfo.jp,
+                totalJP: kelasInfo.totalJP,
+                jumlahMurid: kelasInfo.murid,
                 sakit: parseInt(sakitInput.value) || 0,
                 izin: parseInt(izinInput.value) || 0,
                 alfa: parseInt(alfaInput.value) || 0,
-                createdAt: new Date().toISOString()
+                updatedAt: new Date().toISOString()
             };
 
-            let jurnals = getStoredJurnals();
-
             if (editId) {
-                // Update Existing
-                const index = jurnals.findIndex(item => item.id === editId);
-                if (index !== -1) {
-                    jurnals[index] = jurnalItem;
-                }
-                showToast("Jurnal pembelajaran berhasil diperbarui.", "success");
+                // Update Data Eksis di Firebase
+                set(ref(db, `jurnal_pembelajaran/${editId}`), jurnalItem)
+                    .then(() => {
+                        showToast("Jurnal pembelajaran berhasil diperbarui.", "success");
+                        resetFormFields(false);
+                    })
+                    .catch((err) => showToast("Gagal memperbarui data: " + err.message, "error"));
             } else {
-                // Add New
-                jurnals.push(jurnalItem);
-                showToast("Jurnal pembelajaran berhasil disimpan.", "success");
+                // Tambah Data Baru ke Firebase
+                push(jurnalRef, jurnalItem)
+                    .then(() => {
+                        showToast("Jurnal pembelajaran berhasil disimpan.", "success");
+                        resetFormFields(false);
+                    })
+                    .catch((err) => showToast("Gagal menyimpan data: " + err.message, "error"));
             }
-
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(jurnals));
-            resetFormFields(false);
-            loadJurnalData();
         });
 
         // Reset Form Action
@@ -1000,6 +1034,7 @@
             jurnalForm.reset();
             editIdInput.value = '';
             jumlahMuridDisplay.textContent = '0 Siswa';
+            jumlahJPDisplay.textContent = '3 JP';
             materiCounter.textContent = '0/100 karakter';
             uraianCounter.textContent = '0/500 karakter';
             btnSave.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> SIMPAN JURNAL';
@@ -1011,53 +1046,43 @@
             }
         }
 
-        // Retrieve Data from LocalStorage
-        function getStoredJurnals() {
-            const data = localStorage.getItem(STORAGE_KEY);
-            return data ? JSON.parse(data) : [];
-        }
-
-        // Load & Render Data & Update Dashboard
-        function loadJurnalData() {
-            const jurnals = getStoredJurnals();
-            renderTable(jurnals);
-            updateDashboard(jurnals);
-        }
-
         // Update Dashboard Summary
-        function updateDashboard(jurnals) {
-            dashTotalJurnal.textContent = jurnals.length;
+        function updateDashboard() {
+            dashTotalJurnal.textContent = globalJurnalData.length;
             
-            const totalJP = jurnals.reduce((acc, curr) => acc + (curr.jp || 3), 0);
-            dashTotalJP.textContent = `${totalJP} JP`;
+            const totalJPSum = globalJurnalData.reduce((acc, curr) => acc + (curr.totalJP || 3), 0);
+            dashTotalJP.textContent = `${totalJPSum} JP`;
 
             const today = new Date().toISOString().split('T')[0];
-            const hariIniCount = jurnals.filter(j => j.tanggal === today).length;
+            const hariIniCount = globalJurnalData.filter(j => j.tanggal === today).length;
             dashHariIni.textContent = hariIniCount;
 
-            if (jurnals.length > 0) {
-                dashKelasTerakhir.textContent = jurnals[jurnals.length - 1].kelas;
+            if (globalJurnalData.length > 0) {
+                const sorted = [...globalJurnalData].sort((a, b) => new Date(b.tanggal) - new Date(a.tanggal));
+                dashKelasTerakhir.textContent = sorted[0].kelas;
             } else {
                 dashKelasTerakhir.textContent = '-';
             }
         }
 
-        // Render Table with Filters
-        function renderTable(jurnals) {
+        // Render Table with Realtime Data & Filters
+        function renderTable() {
             const filterKelasVal = filterKelas.value;
+            const filterJPVal = filterJP.value;
             const filterTanggalVal = filterTanggal.value;
             const filterSearchVal = filterSearch.value.toLowerCase().trim();
 
-            let filtered = jurnals.filter(item => {
+            let filtered = globalJurnalData.filter(item => {
                 let matchKelas = filterKelasVal ? item.kelas === filterKelasVal : true;
+                let matchJP = filterJPVal ? item.jp === filterJPVal : true;
                 let matchTanggal = filterTanggalVal ? item.tanggal === filterTanggalVal : true;
                 let matchSearch = filterSearchVal ? 
                     (item.materi.toLowerCase().includes(filterSearchVal) || item.uraian.toLowerCase().includes(filterSearchVal)) : true;
                 
-                return matchKelas && matchTanggal && matchSearch;
+                return matchKelas && matchJP && matchTanggal && matchSearch;
             });
 
-            // Sort Latest First
+            // Urutkan Terbaru
             filtered.sort((a, b) => new Date(b.tanggal) - new Date(a.tanggal));
 
             jurnalTableBody.innerHTML = '';
@@ -1082,22 +1107,22 @@
                     <td>${index + 1}</td>
                     <td style="white-space:nowrap;">${formatDateToDisplay(item.tanggal)}</td>
                     <td><strong>${item.kelas}</strong></td>
+                    <td style="white-space:nowrap;">${item.jp || '1 - 3'}</td>
                     <td style="white-space:nowrap;">${item.pertemuan}</td>
                     <td>
                         <strong style="color:var(--denim-primary);">${item.materi}</strong>
                         <p style="font-size:0.82rem; color:var(--text-muted); margin-top:4px;">${item.uraian}</p>
                     </td>
-                    <td>${item.jp} JP</td>
                     <td>${item.jumlahMurid}</td>
                     <td><span style="color:#D97706; font-weight:600;">${item.sakit}</span></td>
                     <td><span style="color:#2563EB; font-weight:600;">${item.izin}</span></td>
                     <td><span style="color:#DC2626; font-weight:600;">${item.alfa}</span></td>
                     <td>
                         <div class="action-btns">
-                            <button class="btn-sm btn-edit" onclick="editJurnal('${item.id}')">
+                            <button class="btn-sm btn-edit" data-id="${item.id}">
                                 <i class="fa-solid fa-pen"></i> Edit
                             </button>
-                            <button class="btn-sm btn-delete" onclick="deleteJurnal('${item.id}')">
+                            <button class="btn-sm btn-delete" data-id="${item.id}">
                                 <i class="fa-solid fa-trash"></i> Hapus
                             </button>
                         </div>
@@ -1105,23 +1130,24 @@
                 `;
                 jurnalTableBody.appendChild(tr);
             });
+
+            // Assign Event Listeners to Action Buttons
+            document.querySelectorAll('.btn-edit').forEach(btn => {
+                btn.addEventListener('click', () => editJurnal(btn.getAttribute('data-id')));
+            });
+
+            document.querySelectorAll('.btn-delete').forEach(btn => {
+                btn.addEventListener('click', () => deleteJurnal(btn.getAttribute('data-id')));
+            });
         }
 
-        // Filter Event Listeners
-        filterKelas.addEventListener('change', loadJurnalData);
-        filterTanggal.addEventListener('change', loadJurnalData);
-        filterSearch.addEventListener('input', loadJurnalData);
-
         // Edit Jurnal Item
-        window.editJurnal = function(id) {
-            const jurnals = getStoredJurnals();
-            const item = jurnals.find(j => j.id === id);
+        function editJurnal(id) {
+            const item = globalJurnalData.find(j => j.id === id);
 
             if (item) {
                 editIdInput.value = item.id;
                 kelasSelect.value = item.kelas;
-                
-                // Trigger class change event to update student count
                 kelasSelect.dispatchEvent(new Event('change'));
 
                 tanggalInput.value = item.tanggal;
@@ -1132,78 +1158,99 @@
                 izinInput.value = item.izin;
                 alfaInput.value = item.alfa;
 
-                // Update character counters
                 materiCounter.textContent = `${item.materi.length}/100 karakter`;
                 uraianCounter.textContent = `${item.uraian.length}/500 karakter`;
 
                 btnSave.innerHTML = '<i class="fa-solid fa-pen-to-square"></i> UPDATE JURNAL';
-                
-                // Scroll smoothly to form top
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 showToast("Data jurnal dimuat ke form untuk diedit.", "success");
             }
-        };
+        }
 
-        // Delete Jurnal Item
-        window.deleteJurnal = function(id) {
+        // Delete Jurnal Item dari Firebase
+        function deleteJurnal(id) {
             if (confirm("Apakah Anda yakin ingin menghapus jurnal ini?")) {
-                let jurnals = getStoredJurnals();
-                jurnals = jurnals.filter(j => j.id !== id);
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(jurnals));
-                showToast("Jurnal berhasil dihapus.", "success");
-                loadJurnalData();
+                remove(ref(db, `jurnal_pembelajaran/${id}`))
+                    .then(() => showToast("Jurnal berhasil dihapus.", "success"))
+                    .catch(err => showToast("Gagal menghapus data: " + err.message, "error"));
             }
-        };
+        }
 
-        // 11. UNDUH HASIL KE MICROSOFT EXCEL (.XLSX)
+        // UNDUH EXCEL DENGAN FORMAT TEPAT SESUAI JURNAL GURU
         btnExportExcel.addEventListener('click', function() {
-            const jurnals = getStoredJurnals();
-
-            if (jurnals.length === 0) {
+            if (globalJurnalData.length === 0) {
                 showToast("Tidak ada data jurnal untuk diunduh.", "error");
                 return;
             }
 
-            // Prepare excel data structure
-            const excelData = jurnals.map((item, index) => ({
-                "No": index + 1,
-                "Tanggal": formatDateToDisplay(item.tanggal),
-                "Kelas": item.kelas,
-                "Pertemuan": item.pertemuan,
-                "Materi": item.materi,
-                "Uraian Pembelajaran": item.uraian,
-                "Jumlah JP": item.jp,
-                "Jumlah Murid": item.jumlahMurid,
-                "Sakit": item.sakit,
-                "Izin": item.izin,
-                "Alfa": item.alfa
-            }));
+            // Membangun susunan data Excel persis seperti format Jurnal Guru
+            const excelRows = [];
+            
+            // Header Judul
+            excelRows.push(["JURNAL PEMBELAJARAN GURU"]);
+            excelRows.push(["MATA PELAJARAN: INFORMATIKA"]);
+            excelRows.push(["GURU MATA PELAJARAN: RISKI AMALIA, S.Pd."]);
+            excelRows.push([]); // Baris Kosong
 
-            // Create Worksheet
-            const worksheet = XLSX.utils.json_to_sheet(excelData);
+            // Header Tabel
+            excelRows.push([
+                "No", 
+                "Hari / Tanggal", 
+                "Kelas", 
+                "Jam Ke / JP", 
+                "Pertemuan", 
+                "Materi Pembelajaran", 
+                "Uraian Kegiatan Pembelajaran", 
+                "Jumlah Murid", 
+                "Sakit", 
+                "Izin", 
+                "Alfa"
+            ]);
 
-            // Set column widths
+            // Urutkan data berdasarkan tanggal
+            const sortedData = [...globalJurnalData].sort((a, b) => new Date(a.tanggal) - new Date(b.tanggal));
+
+            sortedData.forEach((item, idx) => {
+                excelRows.push([
+                    idx + 1,
+                    formatDateToDisplay(item.tanggal),
+                    item.kelas,
+                    item.jp || "1 - 3",
+                    item.pertemuan,
+                    item.materi,
+                    item.uraian,
+                    item.jumlahMurid,
+                    item.sakit,
+                    item.izin,
+                    item.alfa
+                ]);
+            });
+
+            // Buat Worksheet
+            const worksheet = XLSX.utils.aoa_to_sheet(excelRows);
+
+            // Pengaturan Lebar Kolom Presisi
             worksheet['!cols'] = [
-                { wch: 5 },  // No
-                { wch: 12 }, // Tanggal
-                { wch: 10 }, // Kelas
-                { wch: 15 }, // Pertemuan
-                { wch: 35 }, // Materi
-                { wch: 50 }, // Uraian
-                { wch: 10 }, // JP
-                { wch: 12 }, // Murid
-                { wch: 8 },  // Sakit
-                { wch: 8 },  // Izin
-                { wch: 8 }   // Alfa
+                { wch: 6 },   // No
+                { wch: 15 },  // Tanggal
+                { wch: 10 },  // Kelas
+                { wch: 14 },  // Jam Ke / JP
+                { wch: 15 },  // Pertemuan
+                { wch: 35 },  // Materi
+                { wch: 55 },  // Uraian
+                { wch: 14 },  // Murid
+                { wch: 8 },   // Sakit
+                { wch: 8 },   // Izin
+                { wch: 8 }    // Alfa
             ];
 
-            // Create Workbook & Append Worksheet
+            // Buat Workbook
             const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, "Jurnal Pembelajaran");
+            XLSX.utils.book_append_sheet(workbook, worksheet, "JURNAL GURU");
 
-            // Write File
-            XLSX.writeFile(workbook, "Jurnal_Pembelajaran_Informatika.xlsx");
-            showToast("File Excel berhasil diunduh!", "success");
+            // Unduh File Excel
+            XLSX.writeFile(workbook, "JURNAL_GURU_INFORMATIKA.xlsx");
+            showToast("File Excel Jurnal Guru berhasil diunduh!", "success");
         });
     </script>
 </body>
