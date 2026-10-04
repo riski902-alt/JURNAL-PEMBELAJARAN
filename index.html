@@ -751,7 +751,31 @@
 
     </div>
 
-    <!-- JAVASCRIPT SYSTEM -->
+    <!-- FIREBASE INITIALIZATION -->
+    <script type="module">
+        // Import Firebase functions via CDN for pure HTML integration
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-analytics.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBxy_aOtOcbDIzCKxxKxzcZgQSi4-YUT6g",
+            authDomain: "informatika-fun.firebaseapp.com",
+            projectId: "informatika-fun",
+            storageBucket: "informatika-fun.firebasestorage.app",
+            messagingSenderId: "869889926091",
+            appId: "1:869889926091:web:7d4d08db90802b8e26cc4e",
+            measurementId: "G-QRY003YPJ3"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        
+        console.log("Firebase berhasil diinisialisasi");
+    </script>
+
+    <!-- JAVASCRIPT SYSTEM (LocalStorage Based) -->
     <script>
         // Mapping Jumlah Murid per Kelas
         const dataMuridKelas = {
