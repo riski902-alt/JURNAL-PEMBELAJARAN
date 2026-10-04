@@ -607,11 +607,25 @@
                         <label for="pertemuanSelect"><i class="fa-solid fa-list-ol"></i> Pertemuan *</label>
                         <select id="pertemuanSelect" class="form-control" required>
                             <option value="">-- Pilih Pertemuan --</option>
-                            <script>
-                                for(let i=1; i<=19; i++) {
-                                    document.write(`<option value="Pertemuan ${i}">Pertemuan ${i}</option>`);
-                                }
-                            </script>
+                            <option value="Pertemuan 1">Pertemuan 1</option>
+                            <option value="Pertemuan 2">Pertemuan 2</option>
+                            <option value="Pertemuan 3">Pertemuan 3</option>
+                            <option value="Pertemuan 4">Pertemuan 4</option>
+                            <option value="Pertemuan 5">Pertemuan 5</option>
+                            <option value="Pertemuan 6">Pertemuan 6</option>
+                            <option value="Pertemuan 7">Pertemuan 7</option>
+                            <option value="Pertemuan 8">Pertemuan 8</option>
+                            <option value="Pertemuan 9">Pertemuan 9</option>
+                            <option value="Pertemuan 10">Pertemuan 10</option>
+                            <option value="Pertemuan 11">Pertemuan 11</option>
+                            <option value="Pertemuan 12">Pertemuan 12</option>
+                            <option value="Pertemuan 13">Pertemuan 13</option>
+                            <option value="Pertemuan 14">Pertemuan 14</option>
+                            <option value="Pertemuan 15">Pertemuan 15</option>
+                            <option value="Pertemuan 16">Pertemuan 16</option>
+                            <option value="Pertemuan 17">Pertemuan 17</option>
+                            <option value="Pertemuan 18">Pertemuan 18</option>
+                            <option value="Pertemuan 19">Pertemuan 19</option>
                         </select>
                     </div>
                 </div>
@@ -835,7 +849,7 @@
             tanggalInput.value = today;
         });
 
-        // 1. LISTEN REALTIME CHANGES DARI FIREBASE (Sync Laptop & Tablet)
+        // 1. LISTEN REALTIME CHANGES DARI FIREBASE
         onValue(jurnalRef, (snapshot) => {
             const data = snapshot.val();
             globalJurnalData = [];
@@ -1065,7 +1079,7 @@
             }
         }
 
-        // Render Table with Realtime Data & Filters
+        // Render Table dengan Realtime Data & Filters
         function renderTable() {
             const filterKelasVal = filterKelas.value;
             const filterJPVal = filterJP.value;
@@ -1131,7 +1145,7 @@
                 jurnalTableBody.appendChild(tr);
             });
 
-            // Assign Event Listeners to Action Buttons
+            // Assign Event Listeners
             document.querySelectorAll('.btn-edit').forEach(btn => {
                 btn.addEventListener('click', () => editJurnal(btn.getAttribute('data-id')));
             });
@@ -1183,14 +1197,13 @@
                 return;
             }
 
-            // Membangun susunan data Excel persis seperti format Jurnal Guru
             const excelRows = [];
             
             // Header Judul
             excelRows.push(["JURNAL PEMBELAJARAN GURU"]);
             excelRows.push(["MATA PELAJARAN: INFORMATIKA"]);
             excelRows.push(["GURU MATA PELAJARAN: RISKI AMALIA, S.Pd."]);
-            excelRows.push([]); // Baris Kosong
+            excelRows.push([]);
 
             // Header Tabel
             excelRows.push([
@@ -1229,7 +1242,7 @@
             // Buat Worksheet
             const worksheet = XLSX.utils.aoa_to_sheet(excelRows);
 
-            // Pengaturan Lebar Kolom Presisi
+            // Pengaturan Lebar Kolom
             worksheet['!cols'] = [
                 { wch: 6 },   // No
                 { wch: 15 },  // Tanggal
